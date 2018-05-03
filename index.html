@@ -1,59 +1,58 @@
-<!DOCTYPE html>
 <html>
-<head>
-<style> 
-* { box-sizing: border-box; }
-.video-background {
-  background: #000;
-  position: fixed;
-  top: 0; right: 0; bottom: 0; left: 0;
-  z-index: -99;
-}
-.video-foreground,
-.video-background iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-#vidtop-content {
-	top: 0;
-	color: #fff;
-}
-.vid-info { position: absolute; top: 0; right: 0; width: 33%; background: rgba(0,0,0,0.3); color: #fff; padding: 1rem; font-family: Avenir, Helvetica, sans-serif; }
-.vid-info h1 { font-size: 2rem; font-weight: 700; margin-top: 0; line-height: 1.2; }
-.vid-info a { display: block; color: #fff; text-decoration: none; background: rgba(0,0,0,0.5); transition: .6s background; border-bottom: none; margin: 1rem auto; text-align: center; }
-@media (min-aspect-ratio: 16/9) {
-  .video-foreground { height: 300%; top: -100%; }
-}
-@media (max-aspect-ratio: 16/9) {
-  .video-foreground { width: 300%; left: -100%; }
-}
-@media all and (max-width: 600px) {
-.vid-info { width: 50%; padding: .5rem; }
-.vid-info h1 { margin-bottom: .2rem; }
-}
-@media all and (max-width: 500px) {
-.vid-info .acronym { display: none; }
-}
-</style>
-</head>
 <body>
-<div class="video-background">
-    <div class="video-foreground">
-      <iframe src="https://www.youtube.com/embed/gZHjRQjbHrE?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=gZHjRQjbHrE" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
+	<div id="ytplayer"></div>
+	<script src="http://www.youtube.com/player_api"></script>
+	<button id="playbtn" type="button" onClick=play()>play</button>
+	<button type="button" onClick=pause()>pause</button>
+	<button type="button" onClick=showdb()>showdb</button>
 
-<div id="vidtop-content">
-<div class="vid-info">
-	  <h1>YouTube Fullscreen Background Demo</h1>
-	  <p>The International Space Station orbits the Earth every 92 minutes, with its crew seeing a sunrise 15 times a day. It exists as a scientific, educational, and engineering platform in low orbit, 330 to 435 kilometres above the Earth.
-     <p>Original timelapse by Riccardo Rossi (ISAA), used under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. Raw photos courtesy of http://eol.jsc.nasa.gov/
-	 <a href="/500/Use-YouTube-Videos-as-Fullscreen-Web-Page-Backgrounds">Full article</a>
-  </div>
-</div>
+	<script>
+	// Load the IFrame Player API code asynchronously.
+	var player;
+	function onYouTubePlayerAPIReady() {
+		player = new YT.Player('ytplayer', {
+		height: '390',
+		width: '640',
+		videoId: 'LSMJcFiOjBc',
+		events: {
+		        onReady: onPlayerReady,
+		        onStateChange: onPlayerStateChange
+              	},
+		
+		playerVars: { 
+        'controls': 0, 
+        'rel' : 0,
+		'showinfo': 0,
+		}
+		});
+		
+	}
+
+        // autoplay video
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        // when video ends
+        function onPlayerStateChange(event) {        
+            if(event.data === 0) {          
+                document.getElementById('playbtn').onclick();
+            }
+        }
+	function play(){
+		player.playVideo();
+	}
+	function pause(){
+		player.pauseVideo();
+	}
+	function checkactive(){
+	var videoID = 'p';//working 
+
+	$.getJSON('http://gdata.youtube.com/feeds/api/videos/'+videoID+'?v=2&alt=jsonc',function(data,status,xhr){
+		alert(data.data.title);
+	}).error(function() { alert("error"); });
+	}
+	checkactive();
+	</script>
 </body>
 </html>
