@@ -1,52 +1,10 @@
 <!DOCTYPE html>
+<html>
 <body>
-	<div id="ytplayer"></div>
-	<script src="http://www.youtube.com/player_api"></script>
-	<button id="playbtn" type="button" onClick=play()>play</button>
-	<button type="button" onClick=pause()>pause</button>
-	<button type="button" onClick=showdb()>showdb</button>
 
-	<script>
-	// Load the IFrame Player API code asynchronously.
-	var player;
-	function onYouTubePlayerAPIReady() {
-		player = new YT.Player('ytplayer', {
-		height: '390',
-		width: '640',
-		videoId: 'LSMJcFiOjBc',
-		events: {
-		        onReady: onPlayerReady,
-		        onStateChange: onPlayerStateChange
-              	},
-		});
-		
-	}
+<iframe src="https://www.w3schools.com">
+  <p>Your browser does not support iframes.</p>
+</iframe>
 
-        // autoplay video
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
-
-        // when video ends
-        function onPlayerStateChange(event) {        
-            if(event.data === 0) {          
-                document.getElementById('playbtn').onclick();
-            }
-        }
-	function play(){
-		player.playVideo();
-	}
-	function pause(){
-		player.pauseVideo();
-	}
-	function checkactive(){
-	var videoID = 'p';//working 
-
-	$.getJSON('http://gdata.youtube.com/feeds/api/videos/'+videoID+'?v=2&alt=jsonc',function(data,status,xhr){
-		alert(data.data.title);
-	}).error(function() { alert("error"); });
-	}
-	checkactive();
-	</script>
 </body>
 </html>
